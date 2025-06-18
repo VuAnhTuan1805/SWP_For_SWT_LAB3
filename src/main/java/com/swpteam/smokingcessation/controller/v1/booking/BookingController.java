@@ -5,6 +5,7 @@ import com.swpteam.smokingcessation.common.PageableRequest;
 import com.swpteam.smokingcessation.constant.SuccessCode;
 import com.swpteam.smokingcessation.domain.dto.booking.BookingRequest;
 import com.swpteam.smokingcessation.domain.dto.booking.BookingResponse;
+import com.swpteam.smokingcessation.domain.dto.booking.BookingUpdateRequest;
 import com.swpteam.smokingcessation.service.interfaces.booking.IBookingService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -60,7 +61,7 @@ public class BookingController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> updateBookingById(@PathVariable String id, @Valid @RequestBody BookingRequest request) {
+    ResponseEntity<?> updateBookingById(@PathVariable String id, @Valid @RequestBody BookingUpdateRequest request) {
         return ResponseEntity.ok(
                 ApiResponse.<BookingResponse>builder()
                         .code(SuccessCode.BOOKING_UPDATED.getCode())
@@ -72,7 +73,7 @@ public class BookingController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<?> softDeleteBookingById(@PathVariable String id) {
-        bookingService.softDeleteBookingById(id);
+        bookingService.DeleteBookingById(id);
         return ResponseEntity.ok(
                 ApiResponse.<Void>builder()
                         .code(SuccessCode.BOOKING_DELETED.getCode())
@@ -80,7 +81,6 @@ public class BookingController {
                         .build()
         );
     }
-
 
     @PostMapping("/with-meet")
     public ResponseEntity<ApiResponse<BookingResponse>> createBookingWithMeet(@Valid @RequestBody BookingRequest request) {

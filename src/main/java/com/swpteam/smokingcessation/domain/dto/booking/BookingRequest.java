@@ -18,8 +18,6 @@ public class BookingRequest {
     @NotBlank(message = "COACH_ID_REQUIRED")
     String coachId;
 
-    String meetLink;
-
     @NotNull(message = "STARTED_AT_REQUIRED")
     @FutureOrPresent(message = "STARTED_AT_MUST_BE_TODAY_OR_FUTURE")
     LocalDateTime startedAt;
@@ -28,9 +26,7 @@ public class BookingRequest {
     @Future(message = "ENDED_AT_MUST_BE_IN_FUTURE")
     LocalDateTime endedAt;
 
-    @NotNull(message = "IS_APPROVED_REQUIRED")
-    boolean isApproved;
-
-    private String accessToken; // access token Google để tạo Google Meet
+    String accessToken; // access token Google để tạo Google Meet
+    String meetLink;
 
 }

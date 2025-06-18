@@ -178,7 +178,9 @@ public enum ErrorCode {
     ENDED_AT_REQUIRED(1008, "Ended at is required", HttpStatus.BAD_REQUEST),
     ENDED_AT_MUST_BE_IN_FUTURE(1009, "Ended at must be in the future", HttpStatus.BAD_REQUEST),
     IS_APPROVED_REQUIRED(1010, "Approval status is required", HttpStatus.BAD_REQUEST),
-
+    BOOKING_OUT_OF_WORKING_TIME(1020,"Booking out of working time",HttpStatus.BAD_REQUEST),
+    BOOKING_TIME_CONFLICT(1233,"Booking time conflict",HttpStatus.BAD_REQUEST),
+    BOOKING_STATUS_REQUIRED(1215,"Booking status required",HttpStatus.BAD_REQUEST),
     // Category
     CATEGORY_NAME_REQUIRED(4000, "Category name must not be blank", HttpStatus.BAD_REQUEST),
     CATEGORY_MAX_LENGTH(4000, "Category name must not exceed 100 characters", HttpStatus.BAD_REQUEST),
@@ -229,6 +231,8 @@ public enum ErrorCode {
     OTHERS_STREAK_CANNOT_BE_DELETED(3104, "Other's streak counter cannot be deleted", HttpStatus.FORBIDDEN),
     STREAK_ALREADY_EXISTS(3105, "Streak already exists in the system", HttpStatus.CONFLICT),
 
+    // TimeTable
+    TIMETABLE_NOT_FOUND(1111,"Timetable not found",HttpStatus.BAD_REQUEST),
     ;
 
     int code;

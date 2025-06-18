@@ -1,8 +1,11 @@
 package com.swpteam.smokingcessation.domain.dto.booking;
 
 import com.swpteam.smokingcessation.domain.enums.BookingStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -10,15 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookingResponse {
+public class BookingUpdateRequest {
 
-    String id;
-    String accountId;
-    String coachId;
-    String meetLink;
-    LocalDateTime startedAt;
-    LocalDateTime endedAt;
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
+    @NotNull(message = "BOOKING_STATUS_REQUIRED")
     BookingStatus status;
 }

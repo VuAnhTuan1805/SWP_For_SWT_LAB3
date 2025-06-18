@@ -4,6 +4,7 @@ import com.swpteam.smokingcessation.common.PageableRequest;
 import com.swpteam.smokingcessation.constant.ErrorCode;
 import com.swpteam.smokingcessation.domain.dto.booking.BookingRequest;
 import com.swpteam.smokingcessation.domain.dto.booking.BookingResponse;
+import com.swpteam.smokingcessation.domain.dto.booking.BookingUpdateRequest;
 import com.swpteam.smokingcessation.domain.entity.Account;
 import com.swpteam.smokingcessation.domain.entity.Booking;
 import com.swpteam.smokingcessation.domain.entity.Coach;
@@ -13,7 +14,10 @@ import com.swpteam.smokingcessation.exception.AppException;
 import com.swpteam.smokingcessation.repository.AccountRepository;
 import com.swpteam.smokingcessation.repository.BookingRepository;
 import com.swpteam.smokingcessation.repository.CoachRepository;
+import com.swpteam.smokingcessation.repository.TimeTableRepository;
+import com.swpteam.smokingcessation.service.impl.profile.CoachServiceImpl;
 import com.swpteam.smokingcessation.service.interfaces.booking.IBookingService;
+import com.swpteam.smokingcessation.utils.AccountUtilService;
 import com.swpteam.smokingcessation.utils.ValidationUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +41,9 @@ public class BookingServiceImpl implements IBookingService {
     AccountRepository accountRepository;
     CoachRepository coachRepository;
     GoogleCalendarService googleCalendarService;
+    TimeTableRepository timeTableRepository;
+    AccountUtilService accountUtilService;
+    CoachServiceImpl coachService;
 
     @Override
     public Page<BookingResponse> getBookingPage(PageableRequest request) {
@@ -60,18 +67,36 @@ public class BookingServiceImpl implements IBookingService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasRole('MEMBER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEMBER')")
     public BookingResponse createBooking(BookingRequest request) {
-        Booking booking = bookingMapper.toEntity(request);
-
         Account account = accountRepository.findByIdAndIsDeletedFalse(request.getAccountId())
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
-
         Coach coach = coachRepository.findByIdAndIsDeletedFalse(request.getCoachId())
                 .orElseThrow(() -> new AppException(ErrorCode.COACH_NOT_FOUND));
 
+        boolean inWorkingTime = timeTableRepository
+                //check if booking in worktime coachId
+                .findByCoachIdAndStartedAtLessThanEqualAndEndedAtGreaterThanEqual(
+                        request.getCoachId(), request.getStartedAt(), request.getEndedAt()
+                ).isPresent();
+
+        if (!inWorkingTime) {
+            throw new AppException(ErrorCode.BOOKING_OUT_OF_WORKING_TIME);
+        }
+        //check if booking duplicated
+        boolean isOverlapped = bookingRepository.existsByCoachIdAndIsDeletedFalseAndStartedAtLessThanAndEndedAtGreaterThan(
+                request.getCoachId(),
+                request.getEndedAt(),
+                request.getStartedAt()
+        );
+        if (isOverlapped) {
+            throw new AppException(ErrorCode.BOOKING_TIME_CONFLICT);
+        }
+
+        Booking booking = bookingMapper.toEntity(request);
         booking.setAccount(account);
         booking.setCoach(coach);
+        booking.setStatus(BookingStatus.PENDING);
 
         return bookingMapper.toResponse(bookingRepository.save(booking));
     }
@@ -79,33 +104,24 @@ public class BookingServiceImpl implements IBookingService {
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'MEMBER')")
-    public BookingResponse updateBookingById(String id, BookingRequest request) {
+    public BookingResponse updateBookingById(String id, BookingUpdateRequest request) {
         Booking booking = bookingRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOT_FOUND));
 
         bookingMapper.update(booking, request);
 
-        Account account = accountRepository.findByIdAndIsDeletedFalse(request.getAccountId())
-                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
-
-        Coach coach = coachRepository.findByIdAndIsDeletedFalse(request.getCoachId())
-                .orElseThrow(() -> new AppException(ErrorCode.COACH_NOT_FOUND));
-
-        booking.setAccount(account);
-        booking.setCoach(coach);
-
         return bookingMapper.toResponse(bookingRepository.save(booking));
     }
 
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'MEMBER')")
-    public void softDeleteBookingById(String id) {
+    public void DeleteBookingById(String id) {
         Booking booking = bookingRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOT_FOUND));
 
         booking.setDeleted(true);
-        bookingRepository.save(booking);
+        bookingRepository.delete(booking);
     }
 
     @Override
@@ -116,6 +132,24 @@ public class BookingServiceImpl implements IBookingService {
 
         Coach coach = coachRepository.findByIdAndIsDeletedFalse(request.getCoachId())
                 .orElseThrow(() -> new AppException(ErrorCode.COACH_NOT_FOUND));
+
+        boolean inWorkingTime = timeTableRepository
+                .findByCoachIdAndStartedAtLessThanEqualAndEndedAtGreaterThanEqual(
+                        request.getCoachId(), request.getStartedAt(), request.getEndedAt()
+                ).isPresent();
+
+        if (!inWorkingTime) {
+            throw new AppException(ErrorCode.BOOKING_OUT_OF_WORKING_TIME);
+        }
+
+        boolean isOverlapped = bookingRepository.existsByCoachIdAndIsDeletedFalseAndStartedAtLessThanAndEndedAtGreaterThan(
+                request.getCoachId(),
+                request.getEndedAt(),
+                request.getStartedAt()
+        );
+        if (isOverlapped) {
+            throw new AppException(ErrorCode.BOOKING_TIME_CONFLICT);
+        }
 
         String meetingUrl = null;
         try {
@@ -132,7 +166,10 @@ public class BookingServiceImpl implements IBookingService {
         booking.setAccount(account);
         booking.setCoach(coach);
         booking.setMeetLink(meetingUrl);
+        booking.setStatus(BookingStatus.PENDING);
 
         return bookingMapper.toResponse(bookingRepository.save(booking));
     }
+
+
 }

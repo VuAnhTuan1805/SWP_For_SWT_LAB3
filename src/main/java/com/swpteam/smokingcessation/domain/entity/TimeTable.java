@@ -19,13 +19,13 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TimeTable extends BaseEntity {
 
+    @ManyToOne
+    @JoinColumn(name = "coachId", nullable = false)
+    @JsonBackReference
+    private Coach coach;
+
     String name;
     String description;
     LocalDateTime startedAt;
     LocalDateTime endedAt;
-
-    @ManyToOne
-    @JoinColumn(name = "coach_id", nullable = false)
-    @JsonBackReference
-    private Coach coach;
 }

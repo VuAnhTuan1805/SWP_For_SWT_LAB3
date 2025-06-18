@@ -85,4 +85,8 @@ public class CoachServiceImpl implements ICoachService {
 
         coachRepository.save(coach);
     }
+    public Coach getCoachEntityById(String id) {
+        return coachRepository.findByIdAndIsDeletedFalse(id)
+                .orElseThrow(() -> new AppException(ErrorCode.COACH_NOT_FOUND));
+    }
 }

@@ -3,6 +3,7 @@ package com.swpteam.smokingcessation.service.interfaces.booking;
 import com.swpteam.smokingcessation.common.PageableRequest;
 import com.swpteam.smokingcessation.domain.dto.booking.BookingRequest;
 import com.swpteam.smokingcessation.domain.dto.booking.BookingResponse;
+import com.swpteam.smokingcessation.domain.dto.booking.BookingUpdateRequest;
 import org.springframework.data.domain.Page;
 
 public interface IBookingService {
@@ -12,9 +13,9 @@ public interface IBookingService {
 
     BookingResponse createBooking(BookingRequest request);
 
-    BookingResponse updateBookingById(String id, BookingRequest request);
+    BookingResponse updateBookingById(String id, BookingUpdateRequest request);
 
-    void softDeleteBookingById(String id);
+    void DeleteBookingById(String id);
 
     BookingResponse createBookingWithMeet(BookingRequest request);
 }

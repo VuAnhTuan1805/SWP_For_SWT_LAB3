@@ -150,6 +150,14 @@ public enum SuccessCode {
     STREAK_UPDATED(2013, "Streak updated successfully"),
     STREAK_DELETED(2014, "Streak deleted successfully"),
     STREAK_RESET(2015, "Streak reset successfully"),
+
+    // TimeTable
+    TIMETABLE_GET_ALL(200, "Successfully retrieved all timetables"),
+    TIMETABLE_GET_BY_ID(200, "Successfully retrieved timetable by ID"),
+    TIMETABLE_GET_BY_COACH_ID(200, "Successfully retrieved timetables by coach ID"),
+    TIMETABLE_CREATED(201, "Timetable created successfully"),
+    TIMETABLE_UPDATED(200, "Timetable updated successfully"),
+    TIMETABLE_DELETED(200, "Timetable deleted successfully");
     ;
     int code;
     String message;
