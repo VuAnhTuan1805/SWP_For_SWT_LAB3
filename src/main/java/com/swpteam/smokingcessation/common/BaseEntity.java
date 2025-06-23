@@ -18,8 +18,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import static com.swpteam.smokingcessation.utils.DateTimeUtil.DATE_TIME_FORMAT_MILLISECOND;
-
 @Data
 @SuperBuilder
 @NoArgsConstructor
@@ -45,11 +43,9 @@ public abstract class BaseEntity implements Serializable {
 
     @CreatedDate
     @Column(updatable = false)
-    @JsonFormat(pattern = DATE_TIME_FORMAT_MILLISECOND)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @JsonFormat(pattern = DATE_TIME_FORMAT_MILLISECOND)
     private LocalDateTime updatedAt;
 
     boolean isDeleted;

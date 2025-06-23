@@ -13,10 +13,4 @@ public class MessageRequest {
 
     @NotBlank(message = "MESSAGE_CONTENT_REQUIRED")
     String content;
-
-    public class RefreshTokenRequest {
-        @NotBlank(message = "REFRESH_TOKEN_REQUIRED")
-        String refreshToken;
-
-    }
 }

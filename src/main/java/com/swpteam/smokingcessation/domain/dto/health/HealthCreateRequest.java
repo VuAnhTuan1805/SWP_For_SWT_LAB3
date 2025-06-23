@@ -29,7 +29,7 @@ public class HealthCreateRequest {
 
     @Min(value = 0, message = "FND_LEVEL_INVALID_MIN")
     @Max(value = 10, message = "FND_LEVEL_INVALID_MAX")
-    Integer fndLevel;
+    Integer ftndLevel;
 
     @NotBlank(message = "REASON_TO_QUIT_REQUIRED")
     @Size(max = 255, message = "REASON_TO_QUIT_TOO_LONG")

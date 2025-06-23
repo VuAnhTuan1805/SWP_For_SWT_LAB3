@@ -1,5 +1,6 @@
 package com.swpteam.smokingcessation.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.swpteam.smokingcessation.domain.enums.TransactionStatus;
 import com.swpteam.smokingcessation.domain.enums.TransactionType;
 import com.swpteam.smokingcessation.common.BaseEntity;
@@ -17,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 public class Transaction extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "accountId", nullable = false)
+    @JoinColumn(name = "accountId", nullable = false, updatable = false)
     Account account;
 
     double amount;

@@ -17,21 +17,22 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SettingRequest {
+
     @NotBlank(message = "ACCOUNT_NOT_BLANK")
-    private String accountId;
+    String accountId;
 
     @NotNull(message = "THEME_REQUIRED")
-    private Theme theme;
+    Theme theme;
 
     @NotNull(message = "Language is required")
-    private Language language;
+    Language language;
 
     @NotNull(message = "Tracking mode is required")
-    private TrackingMode trackingMode;
+    TrackingMode trackingMode;
 
     @NotNull(message = "Motivation frequency is required")
-    private MotivationFrequency motivationFrequency;
+    MotivationFrequency motivationFrequency;
 
     @NotNull(message = "Report deadline is required")
-    private LocalTime reportDeadline;
+    LocalTime reportDeadline;
 }

@@ -17,10 +17,10 @@ import java.time.LocalTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SettingResponse {
-    private String accountId;
-    private Theme theme;
-    private Language language;
-    private TrackingMode trackingMode;
-    private MotivationFrequency motivationFrequency;
-    private LocalTime reportDeadline;
+    String accountId;
+    Theme theme;
+    Language language;
+    TrackingMode trackingMode;
+    MotivationFrequency motivationFrequency;
+    LocalTime reportDeadline;
 }

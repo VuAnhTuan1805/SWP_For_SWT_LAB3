@@ -1,7 +1,6 @@
 package com.swpteam.smokingcessation.domain.dto.account;
 
 import com.swpteam.smokingcessation.validation.DifferentPasswords;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -14,10 +13,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @DifferentPasswords
 public class ChangePasswordRequest {
-    @NotBlank(message = "EMAIL_REQUIRED")
-    @Email(message = "EMAIL_INVALID")
-    String email;
-
     @NotBlank(message = "PASSWORD_REQUIRED")
     String oldPassword;
 

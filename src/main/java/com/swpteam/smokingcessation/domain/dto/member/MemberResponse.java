@@ -21,7 +21,7 @@ public class MemberResponse {
     String address;
     MemberGender gender;
     int score;
-    int currentStreak;
+    int highestStreak;
     LocalDateTime lastCounterReset;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;

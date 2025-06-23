@@ -1,10 +1,7 @@
 package com.swpteam.smokingcessation.domain.dto.account;
 
 import com.swpteam.smokingcessation.domain.enums.Role;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,8 +11,9 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountRequest {
+
     @NotBlank(message = "EMAIL_REQUIRED")
-    @Email(message = "EMAIL_INVALID")
+    @Email(message = "INVALID_EMAIL_FORMAT")
     String email;
 
     @NotBlank(message = "MESSAGE_REQUIRED")
@@ -24,5 +22,7 @@ public class AccountRequest {
 
     @Pattern(regexp = "\\d{10}", message = "PHONE_NUMBER_INVALID")
     String phoneNumber;
+
+    @NotNull(message = "ROLE_REQUIRED")
     Role role;
 }

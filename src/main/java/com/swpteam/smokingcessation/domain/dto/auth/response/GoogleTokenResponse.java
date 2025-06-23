@@ -10,15 +10,21 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GoogleTokenResponse {
+
     @JsonProperty("access_token")
     String accessToken;
+
     @JsonProperty("refresh_token")
     String refreshToken;
+
     @JsonProperty("id_token")
     String idToken;
+
     @JsonProperty("token_type")
     String tokenType;
+
     @JsonProperty("expires_in")
     Integer expiresIn;
+
     String scope;
 }

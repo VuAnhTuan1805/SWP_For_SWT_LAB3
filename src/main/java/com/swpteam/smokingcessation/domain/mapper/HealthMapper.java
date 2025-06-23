@@ -16,5 +16,5 @@ public interface HealthMapper {
     @Mapping(source = "account.id", target = "accountId")
     HealthResponse toResponse(Health health);
 
-    void updateHealth(@MappingTarget Health entity, HealthUpdateRequest request);
+    void update(@MappingTarget Health entity, HealthUpdateRequest request);
 }

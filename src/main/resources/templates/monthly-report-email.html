@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Monthly Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f8f9fa;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .summary {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .report-data {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #555555;
+            margin-bottom: 30px;
+        }
+
+        .report-data table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .report-data th, .report-data td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .report-data th {
+            background-color: #f1f3f5;
+            color: #333;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .footer p {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 10px;
+        }
+
+        .footer .company-info {
+            color: #333333;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <!-- Header -->
+    <div class="header">
+        <h1>Smoking Cessation Support Platform</h1>
+        <p>Monthly Performance Report</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="summary">
+            Hello Admin,
+        </div>
+
+        <div class="report-data">
+            Here is the performance summary for the past month:
+
+            <table>
+                <tr>
+                    <th>Revenue</th>
+                    <td th:text="${#numbers.formatDecimal(report.revenue, 0, 'COMMA', 0, 'POINT')} + ' VND'"></td>
+                </tr>
+                <tr>
+                    <th>New Accounts</th>
+                    <td th:text="${report.newAccounts}"></td>
+                </tr>
+                <tr>
+                    <th>Current Accounts</th>
+                    <td th:text="${report.currentAccounts}"></td>
+                </tr>
+                <tr>
+                    <th>Active Accounts</th>
+                    <td th:text="${report.activeAccounts}"></td>
+                </tr>
+                <tr>
+                    <th>Report time period</th>
+                    <td th:text="|${#temporals.format(report.fromDate, 'yyyy-MM-dd')} to ${#temporals.format(report.toDate, 'yyyy-MM-dd')}|"></td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="report-data">
+            If you have any questions regarding this report, feel free to contact the technical team.
+        </div>
+        <p style="font-size:12px;color:#888;">
+            Requested at: <span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}"></span>
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p class="company-info">Smoking Cessation Support Platform</p>
+        <p>&copy; <span th:text="${#dates.year(#dates.createNow())}">2025</span> All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>
